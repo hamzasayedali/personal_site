@@ -3,6 +3,8 @@
   padding: 40px;
   max-width: 1200px;
   margin: auto;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Navbar */
@@ -16,8 +18,9 @@
 }
 
 .logo {
-  font-size: 24px;
+  font-size: clamp(18px, 5vw, 24px);
   font-weight: bold;
+  margin: 0;
 }
 
 .navbar nav a {
@@ -76,13 +79,46 @@
 }
 
 @media (max-width: 700px) {
+  .page {
+    padding: 20px 16px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .navbar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 0;
+  }
+
+  .navbar nav a {
+    margin-left: 0;
+    margin-right: 16px;
+  }
+
   .hero {
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 60px;
+  }
+
+  .hero-text h2 {
+    font-size: 32px;
+  }
+
+  .hero-text p {
+    max-width: 100%;
+    font-size: 16px;
   }
 
   .profile-image {
-    margin-top: 20px;
+    margin-top: 0;
+    order: -1;
   }
 }
 
@@ -182,7 +218,7 @@
   height: 0;
   overflow: hidden;
   margin-top: 1rem;
-  
+  max-width: 560px;
 }
 
 .youtube-container iframe {
@@ -190,9 +226,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  max-width: 500px;
-  
-  
+  height: 100%;
 }
 
 .creative-post {
