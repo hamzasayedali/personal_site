@@ -1,6 +1,40 @@
 import { useParams, Link } from "react-router-dom";
-import projects from "./projects";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import projects from "./projects/index";
 import { Button } from "@/components/ui/button";
+
+function extractYoutubeId(url) {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&?/]+)/);
+  return match ? match[1] : null;
+}
+
+// Custom renderers for react-markdown
+const components = {
+  // Render [youtube](url) links as embedded iframes
+  a({ href, children }) {
+    const youtubeId = href && extractYoutubeId(href);
+    if (youtubeId) {
+      return (
+        <div className="relative w-full max-w-xl my-6" style={{ paddingBottom: "56.25%", height: 0 }}>
+          <iframe
+            className="absolute top-0 left-0 w-full h-full rounded-lg"
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            title={String(children)}
+            style={{ border: 0 }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      );
+    }
+    return <a href={href} target="_blank" rel="noreferrer">{children}</a>;
+  },
+  // Ensure images are responsive
+  img({ src, alt }) {
+    return <img src={src} alt={alt} className="rounded-lg w-full max-w-xl" />;
+  },
+};
 
 export default function ProjectPost() {
   const { slug } = useParams();
@@ -31,25 +65,18 @@ export default function ProjectPost() {
         className="w-full max-w-xl object-contain rounded-lg mb-8"
       />
 
-      <div className="max-w-2xl">
-        <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-          {project.content.intro}
-        </p>
+      <div className="prose prose-neutral max-w-2xl font-serif">
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+          {project.content}
+        </ReactMarkdown>
+      </div>
 
-        {project.content.sections.map((section, i) => (
-          <div key={i} className="mb-6">
-            <h3 className="text-xl font-semibold mb-2">{section.heading}</h3>
-            <p className="text-muted-foreground leading-relaxed">{section.body}</p>
-          </div>
-        ))}
-
-        <div className="flex gap-3 mt-10">
-          <Button asChild>
-            <a href={project.github_link} target="_blank" rel="noreferrer">
-              View on GitHub →
-            </a>
-          </Button>
-        </div>
+      <div className="mt-10">
+        <Button asChild>
+          <a href={project.github_link} target="_blank" rel="noreferrer">
+            View on GitHub →
+          </a>
+        </Button>
       </div>
     </section>
   );

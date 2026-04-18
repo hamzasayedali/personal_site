@@ -4,7 +4,7 @@ import dsLogo from "./assets/ds_thumbnail_transparent.png";
 import microLogo from "./assets/microchip_thumbnail_transparent.png";
 import charityCanLogo from "./assets/charitycan_thumbnail_transparent.png";
 import scotiaLogo from "./assets/scotiabank_thumbnail_transparent.png";
-import projects from "./projects";
+import projects from "./projects/index";
 import ProjectPost from "./ProjectPost";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
